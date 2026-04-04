@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --font-ui: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-data: 'Space Grotesk', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+[data-theme="void"] {
+  --bg-base: #000000;
+  --bg-glass: rgba(10,10,20,0.6);
+  --bg-glass-hover: rgba(10,10,20,0.75);
+  --bg-input: rgba(255,255,255,0.03);
+  --accent: #6366f1;
+  --accent-light: #818cf8;
+  --accent-glow: rgba(99,102,241,0.15);
+  --accent-muted: rgba(99,102,241,0.08);
+  --text-1: #eeeef0;
+  --text-2: #6a6a80;
+  --text-3: #3a3a50;
+  --border: rgba(255,255,255,0.04);
+  --border-hover: rgba(255,255,255,0.08);
+  --gradient-1: rgba(99,102,241,0.04);
+  --gradient-2: rgba(129,140,248,0.03);
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #f43f5e;
+}
+
+[data-theme="aurora"] {
+  --bg-base: #020810;
+  --bg-glass: rgba(2,8,16,0.7);
+  --bg-glass-hover: rgba(2,8,16,0.85);
+  --bg-input: rgba(255,255,255,0.03);
+  --accent: #10b981;
+  --accent-light: #34d399;
+  --accent-glow: rgba(16,185,129,0.15);
+  --accent-muted: rgba(16,185,129,0.08);
+  --text-1: #eeeef0;
+  --text-2: #6a8080;
+  --text-3: #3a5050;
+  --border: rgba(16,185,129,0.04);
+  --border-hover: rgba(16,185,129,0.08);
+  --gradient-1: rgba(16,185,129,0.04);
+  --gradient-2: rgba(6,182,212,0.03);
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #f43f5e;
+}
+
+[data-theme="crimson"] {
+  --bg-base: #0a0406;
+  --bg-glass: rgba(10,4,6,0.7);
+  --bg-glass-hover: rgba(10,4,6,0.85);
+  --bg-input: rgba(255,255,255,0.03);
+  --accent: #f43f5e;
+  --accent-light: #fb7185;
+  --accent-glow: rgba(244,63,94,0.15);
+  --accent-muted: rgba(244,63,94,0.08);
+  --text-1: #eeeef0;
+  --text-2: #806a6a;
+  --text-3: #503a3a;
+  --border: rgba(244,63,94,0.04);
+  --border-hover: rgba(244,63,94,0.08);
+  --gradient-1: rgba(244,63,94,0.04);
+  --gradient-2: rgba(251,113,133,0.03);
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #f43f5e;
+}
+
+[data-theme="solar"] {
+  --bg-base: #080604;
+  --bg-glass: rgba(8,6,4,0.7);
+  --bg-glass-hover: rgba(8,6,4,0.85);
+  --bg-input: rgba(255,255,255,0.03);
+  --accent: #f59e0b;
+  --accent-light: #fbbf24;
+  --accent-glow: rgba(245,158,11,0.15);
+  --accent-muted: rgba(245,158,11,0.08);
+  --text-1: #eeeef0;
+  --text-2: #808070;
+  --text-3: #505040;
+  --border: rgba(245,158,11,0.04);
+  --border-hover: rgba(245,158,11,0.08);
+  --gradient-1: rgba(245,158,11,0.04);
+  --gradient-2: rgba(251,191,36,0.03);
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #f43f5e;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg-base);
+  color: var(--text-1);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -40%;
+  left: -20%;
+  width: 70%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, var(--gradient-1) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -30%;
+  right: -15%;
+  width: 50%;
+  height: 80%;
+  background: radial-gradient(ellipse at center, var(--gradient-2) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root { height: 100vh; width: 100vw; position: relative; z-index: 1; }
+
+.glass {
+  background: var(--bg-glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: all 0.2s ease-out;
+}
+.glass:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+.font-data { font-family: var(--font-data); }
+.font-mono { font-family: var(--font-mono); }
+
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-2);
+  margin-bottom: 12px;
+}
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+::selection {
+  background: var(--accent-muted);
+  color: var(--text-1);
+}
