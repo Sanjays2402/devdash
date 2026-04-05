@@ -62,7 +62,7 @@ function Widget({ children, style }) {
     <motion.div
       variants={item}
       className="glass"
-      style={{ padding: 20, overflow: 'hidden', display: 'flex', flexDirection: 'column', ...style }}
+      style={{ padding: 20, overflow: 'hidden', display: 'flex', flexDirection: 'column', minHeight: 0, ...style }}
     >
       {children}
     </motion.div>

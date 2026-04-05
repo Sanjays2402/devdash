@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local data (real API data — never push)
+public/data/
+scripts/
