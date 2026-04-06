@@ -175,3 +175,56 @@ body::after {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
+
+/* ─── React Grid Layout overrides ─────────────────── */
+.react-grid-layout {
+  position: relative;
+  transition: height 200ms ease;
+}
+
+.react-grid-item {
+  transition: all 200ms ease;
+  transition-property: left, top;
+}
+
+.react-grid-item.react-grid-placeholder {
+  background: var(--accent-glow) !important;
+  border: 1px dashed var(--accent) !important;
+  border-radius: 16px !important;
+  opacity: 0.4 !important;
+}
+
+.react-grid-item.react-draggable-dragging {
+  z-index: 100;
+  opacity: 0.9;
+}
+
+.grid-item-outer {
+  height: 100%;
+  position: relative;
+}
+
+.drag-handle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  cursor: grab;
+  z-index: 5;
+  border-radius: 16px 16px 0 0;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+/* Remove the translate on hover for grid items — RGL handles transforms */
+.grid-item-outer > .glass:hover {
+  transform: none;
+}
+
+/* Ensure widget wrapper fills its grid cell */
+.grid-item-outer > .widget-wrapper {
+  height: 100%;
+}
