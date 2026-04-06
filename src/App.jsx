@@ -1,7 +1,9 @@
 import { useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { GridLayout, useContainerWidth } from 'react-grid-layout'
 import { useStore } from './store'
+import { WIDGET_IDS } from './widgetConfig'
 import Header from './components/Header'
+import WidgetWrapper from './components/WidgetWrapper'
 import ClockWeather from './components/widgets/ClockWeather'
 import GitHubStreak from './components/widgets/GitHubStreak'
 import SystemMonitor from './components/widgets/SystemMonitor'
@@ -12,59 +14,78 @@ import NowPlaying from './components/widgets/NowPlaying'
 import QuickLinks from './components/widgets/QuickLinks'
 import Scratchpad from './components/widgets/Scratchpad'
 import HackerNews from './components/widgets/HackerNews'
+import QuickNotes from './components/widgets/QuickNotes'
 
-const container = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } }
-const item = { hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }
+const WIDGET_MAP = {
+  'clock-weather': ClockWeather,
+  'github-streak': GitHubStreak,
+  'system-monitor': SystemMonitor,
+  'pomodoro': Pomodoro,
+  'gmail-inbox': GmailInbox,
+  'calendar-next': CalendarNext,
+  'now-playing': NowPlaying,
+  'quick-links': QuickLinks,
+  'scratchpad': Scratchpad,
+  'hacker-news': HackerNews,
+  'quick-notes': QuickNotes,
+}
 
 export default function App() {
-  const { theme, setTheme } = useStore()
+  const { theme, layout, setLayout, focusMode, focusWidgets } = useStore()
+  const { width, containerRef, mounted } = useContainerWidth()
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
+  const visibleWidgets = focusMode
+    ? WIDGET_IDS.filter(id => focusWidgets.includes(id))
+    : WIDGET_IDS
+
+  const visibleLayout = layout.filter(item => visibleWidgets.includes(item.i))
+
+  // Calculate row height from container
+  const containerEl = containerRef.current
+  const containerHeight = containerEl ? containerEl.clientHeight : 600
+  const rowHeight = Math.max(100, Math.floor((containerHeight - 14 * 2) / 3))
+
   return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', padding: 16, gap: 14 }}>
       <Header />
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        style={{
-          flex: 1,
-          display: 'grid',
-          gridTemplateColumns: 'repeat(12, 1fr)',
-          gridTemplateRows: 'repeat(3, 1fr)',
-          gap: 14,
-          minHeight: 0,
-        }}
-      >
-        {/* Row 1 */}
-        <Widget style={{ gridColumn: '1 / 5', gridRow: '1' }}><ClockWeather /></Widget>
-        <Widget style={{ gridColumn: '5 / 9', gridRow: '1' }}><GitHubStreak /></Widget>
-        <Widget style={{ gridColumn: '9 / 11', gridRow: '1' }}><SystemMonitor /></Widget>
-        <Widget style={{ gridColumn: '11 / 13', gridRow: '1' }}><Pomodoro /></Widget>
-
-        {/* Row 2-3 */}
-        <Widget style={{ gridColumn: '1 / 5', gridRow: '2 / 4' }}><GmailInbox /></Widget>
-        <Widget style={{ gridColumn: '5 / 8', gridRow: '2' }}><CalendarNext /></Widget>
-        <Widget style={{ gridColumn: '8 / 13', gridRow: '2' }}><NowPlaying /></Widget>
-        <Widget style={{ gridColumn: '5 / 8', gridRow: '3' }}><QuickLinks /></Widget>
-        <Widget style={{ gridColumn: '8 / 11', gridRow: '3' }}><Scratchpad /></Widget>
-        <Widget style={{ gridColumn: '11 / 13', gridRow: '3' }}><HackerNews /></Widget>
-      </motion.div>
+      <div ref={containerRef} style={{ flex: 1, minHeight: 0, overflow: 'auto' }}>
+        {mounted && (
+          <GridLayout
+            layout={visibleLayout}
+            width={width}
+            cols={12}
+            rowHeight={rowHeight}
+            margin={[14, 14]}
+            containerPadding={[0, 0]}
+            isDraggable
+            isResizable={false}
+            draggableHandle=".drag-handle"
+            onLayoutChange={(newLayout) => {
+              if (newLayout.length === visibleLayout.length) {
+                setLayout(newLayout)
+              }
+            }}
+            useCSSTransforms
+          >
+            {visibleLayout.map(item => {
+              const Comp = WIDGET_MAP[item.i]
+              if (!Comp) return null
+              return (
+                <div key={item.i} className="grid-item-outer">
+                  <div className="drag-handle" />
+                  <WidgetWrapper id={item.i}>
+                    <Comp />
+                  </WidgetWrapper>
+                </div>
+              )
+            })}
+          </GridLayout>
+        )}
+      </div>
     </div>
-  )
-}
-
-function Widget({ children, style }) {
-  return (
-    <motion.div
-      variants={item}
-      className="glass"
-      style={{ padding: 20, overflow: 'hidden', display: 'flex', flexDirection: 'column', minHeight: 0, ...style }}
-    >
-      {children}
-    </motion.div>
   )
 }
