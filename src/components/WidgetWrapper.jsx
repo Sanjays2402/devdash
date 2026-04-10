@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { PushPin, PushPinSimple } from '@phosphor-icons/react'
 import { useStore } from '../store'
 import { WIDGET_SIZES } from '../widgetConfig'
 
@@ -45,7 +46,7 @@ export default function WidgetWrapper({ id, children }) {
               transition: 'all 0.15s ease-out',
             }}
           >
-            📌
+            {focusWidgets.includes(id) ? <PushPin size={13} weight="fill" /> : <PushPinSimple size={13} />}
           </button>
 
           {/* Resize buttons */}

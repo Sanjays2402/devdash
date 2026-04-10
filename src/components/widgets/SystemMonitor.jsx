@@ -1,3 +1,5 @@
+import { Desktop } from '@phosphor-icons/react'
+
 function ArcGauge({ value, max, label, size = 70, color }) {
   const r = (size - 8) / 2
   const circ = Math.PI * r
@@ -25,7 +27,7 @@ function ArcGauge({ value, max, label, size = 70, color }) {
 export default function SystemMonitor() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
-      <div className="section-label">System</div>
+      <div className="section-label"><Desktop size={14} weight="duotone" style={{ marginRight: 6, opacity: 0.7 }} />System</div>
       <div style={{ display: 'flex', justifyContent: 'space-around' }}>
         <ArcGauge value={23} max={100} label="CPU" />
         <ArcGauge value={78} max={100} label="RAM" />

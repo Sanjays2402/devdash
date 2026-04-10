@@ -1,4 +1,5 @@
 import { useStore } from '../../store'
+import { NotePencil } from '@phosphor-icons/react'
 
 const NOTE_COLORS = [
   'rgba(99,102,241,0.15)',
@@ -22,7 +23,7 @@ export default function QuickNotes() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-        <div className="section-label" style={{ margin: 0 }}>Quick Notes</div>
+        <div className="section-label" style={{ margin: 0 }}><NotePencil size={14} weight="duotone" style={{ marginRight: 6, opacity: 0.7 }} />Quick Notes</div>
         <button
           onClick={addQuickNote}
           style={{

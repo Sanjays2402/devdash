@@ -1,3 +1,5 @@
+import { CalendarDots } from '@phosphor-icons/react'
+
 const events = [
   { color: '#6366f1', title: 'Team Standup', time: 'in 45m', accent: true },
   { color: '#3b82f6', title: '1:1 with Manager', time: '3:00 PM' },
@@ -7,7 +9,7 @@ const events = [
 export default function CalendarNext() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <div className="section-label">Next Up</div>
+      <div className="section-label"><CalendarDots size={14} weight="duotone" style={{ marginRight: 6, opacity: 0.7 }} />Next Up</div>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
         {events.map((e, i) => (
           <div key={i} style={{
