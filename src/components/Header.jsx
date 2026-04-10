@@ -1,4 +1,5 @@
 import { useStore, THEMES, THEME_COLORS } from '../store'
+import { Crosshair, ArrowCounterClockwise } from '@phosphor-icons/react'
 
 export default function Header() {
   const { theme, setTheme, focusMode, toggleFocusMode, resetLayout } = useStore()
@@ -41,7 +42,7 @@ export default function Header() {
         {/* Focus mode toggle */}
         <button
           onClick={toggleFocusMode}
-          title={focusMode ? 'Exit Focus Mode' : 'Enter Focus Mode (pin widgets via 📌)'}
+          title={focusMode ? 'Exit Focus Mode' : 'Enter Focus Mode (pin widgets via pin icon)'}
           style={{
             padding: '4px 10px', borderRadius: 8, fontSize: 12, fontWeight: 500,
             fontFamily: 'var(--font-ui)',
@@ -53,7 +54,7 @@ export default function Header() {
             display: 'flex', alignItems: 'center', gap: 4,
           }}
         >
-          <span style={{ fontSize: 13 }}>🎯</span>
+          <Crosshair size={15} weight={focusMode ? 'fill' : 'regular'} />
           <span>{focusMode ? 'Exit Focus' : 'Focus'}</span>
         </button>
 

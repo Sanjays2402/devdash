@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { EnvelopeSimple } from '@phosphor-icons/react'
 
 const API = 'http://localhost:5198'
 
@@ -47,7 +48,7 @@ export default function GmailInbox() {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, overflow: 'hidden', position: 'relative' }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, flexShrink: 0 }}>
-        <div className="section-label" style={{ margin: 0 }}>Inbox</div>
+        <div className="section-label" style={{ margin: 0 }}><EnvelopeSimple size={14} weight="duotone" style={{ marginRight: 6, opacity: 0.7 }} />Inbox</div>
         <div style={{
           fontFamily: 'var(--font-data)', fontSize: 12, fontWeight: 600,
           background: data.unreadCount > 0 ? 'var(--accent)' : 'rgba(255,255,255,0.1)',

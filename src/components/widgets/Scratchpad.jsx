@@ -1,11 +1,12 @@
 import { useStore } from '../../store'
+import { Notepad } from '@phosphor-icons/react'
 
 export default function Scratchpad() {
   const { notes, setNotes } = useStore()
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <div className="section-label">Scratchpad</div>
+      <div className="section-label"><Notepad size={14} weight="duotone" style={{ marginRight: 6, opacity: 0.7 }} />Scratchpad</div>
       <div style={{ flex: 1, position: 'relative' }}>
         <textarea
           value={notes}

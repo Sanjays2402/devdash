@@ -1,3 +1,5 @@
+import { FireSimple } from '@phosphor-icons/react'
+
 const stories = [
   { title: 'Show HN: DevDash — personal dev dashboard', domain: 'github.com', points: 342 },
   { title: 'Why I stopped using RAG and switched to INDEX.md', domain: 'blog.karpathy.ai', points: 289 },
@@ -8,7 +10,7 @@ const stories = [
 export default function HackerNews() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <div className="section-label" style={{ color: '#f97316' }}>🔶 HN Top</div>
+      <div className="section-label" style={{ color: '#f97316' }}><FireSimple size={14} weight="fill" style={{ marginRight: 6 }} />HN Top</div>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
         {stories.map((s, i) => (
           <div key={i} style={{ cursor: 'pointer', transition: 'all 0.15s ease-out' }}

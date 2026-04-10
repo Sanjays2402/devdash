@@ -1,11 +1,12 @@
 import { useStore } from '../../store'
+import { Link, EnvelopeSimple, CalendarDots, Desktop, FireSimple, NoteBlank, Notebook, Timer } from '@phosphor-icons/react'
 
 export default function QuickLinks() {
   const { links } = useStore()
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <div className="section-label">Quick Links</div>
+      <div className="section-label"><Link size={14} weight="duotone" style={{ marginRight: 6, opacity: 0.7 }} />Quick Links</div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, flex: 1, alignContent: 'center' }}>
         {links.map((l, i) => (
           <a key={i} href={l.url} target="_blank" rel="noopener" style={{
