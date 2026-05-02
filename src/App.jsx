@@ -16,6 +16,7 @@ import Scratchpad from './components/widgets/Scratchpad'
 import HackerNews from './components/widgets/HackerNews'
 import QuickNotes from './components/widgets/QuickNotes'
 import Habits from './components/widgets/Habits'
+import ShortcutsOverlay from './components/ShortcutsOverlay'
 
 const WIDGET_MAP = {
   'clock-weather': ClockWeather,
@@ -53,6 +54,7 @@ export default function App() {
 
   return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', padding: 16, gap: 14 }}>
+      <ShortcutsOverlay />
       <Header />
       <div ref={containerRef} style={{ flex: 1, minHeight: 0, overflow: 'auto' }}>
         {mounted && (
