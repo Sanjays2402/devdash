@@ -15,6 +15,7 @@ import QuickLinks from './components/widgets/QuickLinks'
 import Scratchpad from './components/widgets/Scratchpad'
 import HackerNews from './components/widgets/HackerNews'
 import QuickNotes from './components/widgets/QuickNotes'
+import Habits from './components/widgets/Habits'
 
 const WIDGET_MAP = {
   'clock-weather': ClockWeather,
@@ -28,6 +29,7 @@ const WIDGET_MAP = {
   'scratchpad': Scratchpad,
   'hacker-news': HackerNews,
   'quick-notes': QuickNotes,
+  'habits': Habits,
 }
 
 export default function App() {

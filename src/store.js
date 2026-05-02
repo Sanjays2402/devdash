@@ -132,16 +132,44 @@ export const useStore = create((set, get) => ({
   }),
 
   // ─── Habits ────────────────────────────────────────
-  habits: JSON.parse(localStorage.getItem('devdash-habits') || 'null') || [
-    { id: 'exercise', name: 'Exercise', done: false },
-    { id: 'read', name: 'Read 30min', done: false },
-    { id: 'water', name: 'Drink 8 glasses', done: false },
-    { id: 'code', name: 'Code 1hr', done: false },
-    { id: 'journal', name: 'Journal', done: false },
-  ],
+  habits: (() => {
+    const stored = JSON.parse(localStorage.getItem('devdash-habits') || 'null')
+    const lastReset = localStorage.getItem('devdash-habits-date')
+    const today = new Date().toDateString()
+    const defaults = [
+      { id: 'exercise', name: 'Exercise', done: false },
+      { id: 'read', name: 'Read 30min', done: false },
+      { id: 'water', name: 'Drink 8 glasses', done: false },
+      { id: 'code', name: 'Code 1hr', done: false },
+      { id: 'journal', name: 'Journal', done: false },
+    ]
+    if (!stored) return defaults
+    if (lastReset !== today) {
+      // Daily reset: clear done flags but keep habit list
+      return stored.map(h => ({ ...h, done: false }))
+    }
+    return stored
+  })(),
+  habitStreak: parseInt(localStorage.getItem('devdash-habit-streak') || '0', 10),
   toggleHabit: (id) => set(s => {
     const habits = s.habits.map(h => h.id === id ? { ...h, done: !h.done } : h)
+    const today = new Date().toDateString()
     localStorage.setItem('devdash-habits', JSON.stringify(habits))
-    return { habits }
+    localStorage.setItem('devdash-habits-date', today)
+
+    // Streak bookkeeping: bump only on the transition to all-done for today
+    const allDone = habits.length > 0 && habits.every(h => h.done)
+    const wasAllDone = s.habits.length > 0 && s.habits.every(h => h.done)
+    let streak = s.habitStreak
+    if (allDone && !wasAllDone) {
+      const last = localStorage.getItem('devdash-habit-streak-date')
+      const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toDateString()
+      streak = last === yesterday ? streak + 1 : 1
+      localStorage.setItem('devdash-habit-streak', String(streak))
+      localStorage.setItem('devdash-habit-streak-date', today)
+    } else if (!allDone && wasAllDone) {
+      // User unchecked after completing — keep the streak (don't punish edits)
+    }
+    return { habits, habitStreak: streak }
   }),
 }))

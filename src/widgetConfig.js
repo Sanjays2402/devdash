@@ -12,6 +12,7 @@ export const WIDGET_IDS = [
   'scratchpad',
   'hacker-news',
   'quick-notes',
+  'habits',
 ]
 
 export const DEFAULT_LAYOUT = [
@@ -26,6 +27,7 @@ export const DEFAULT_LAYOUT = [
   { i: 'scratchpad',     x: 6,  y: 2, w: 2, h: 1 },
   { i: 'quick-notes',    x: 8,  y: 2, w: 2, h: 1 },
   { i: 'hacker-news',    x: 10, y: 2, w: 2, h: 1 },
+  { i: 'habits',         x: 0,  y: 3, w: 4, h: 2 },
 ]
 
 // Size presets per widget: [w, h]
@@ -41,6 +43,7 @@ export const WIDGET_SIZES = {
   'scratchpad':     { sm: [2, 1], md: [2, 1], lg: [4, 2] },
   'hacker-news':    { sm: [2, 1], md: [2, 1], lg: [4, 2] },
   'quick-notes':    { sm: [2, 1], md: [2, 1], lg: [4, 2] },
+  'habits':         { sm: [3, 2], md: [4, 2], lg: [6, 3] },
 }
 
 // Default focus set
