@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 
-// your city
-const LAT = 51.4779
-const LON = -0.0015
+// Coordinates and label come from env (see .env.example).
+// Defaults to Greenwich, UK.
+const LAT = parseFloat(import.meta.env.VITE_WEATHER_LAT || '51.4779')
+const LON = parseFloat(import.meta.env.VITE_WEATHER_LON || '-0.0015')
+const LOCATION = import.meta.env.VITE_WEATHER_LOCATION || 'Greenwich'
 
 // WMO weather codes → emoji + label
 // https://open-meteo.com/en/docs#weather_variable_documentation
@@ -97,7 +99,7 @@ export default function ClockWeather() {
             {weather ? `${weather.temp}°F` : '—'}
           </div>
           <div style={{ fontSize: 12, color: 'var(--text-2)' }}>
-            {weather ? `${weather.label} · your city` : 'Loading weather…'}
+            {weather ? `${weather.label} · ${LOCATION}` : 'Loading weather…'}
           </div>
         </div>
       </div>

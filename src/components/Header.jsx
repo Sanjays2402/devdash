@@ -32,7 +32,7 @@ export default function Header() {
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
         <span style={{ fontSize: 14, color: 'var(--text-1)' }}>
-          {greeting}, friend 👋
+          {greeting}, {import.meta.env.VITE_USER_NAME || 'friend'} 👋
         </span>
         <span style={{ fontSize: 13, color: 'var(--text-2)' }}>
           {dateStr}
