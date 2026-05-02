@@ -1,5 +1,6 @@
+import { useState } from 'react'
 import { useStore } from '../../store'
-import { NotePencil } from '@phosphor-icons/react'
+import { NotePencil, MagnifyingGlass } from '@phosphor-icons/react'
 
 const NOTE_COLORS = [
   'rgba(99,102,241,0.15)',
@@ -19,24 +20,45 @@ const BORDER_COLORS = [
 
 export default function QuickNotes() {
   const { quickNotes, addQuickNote, updateQuickNote, deleteQuickNote, cycleNoteColor } = useStore()
+  const [query, setQuery] = useState('')
+  const filtered = query.trim()
+    ? quickNotes.filter(n => n.text.toLowerCase().includes(query.trim().toLowerCase()))
+    : quickNotes
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
         <div className="section-label" style={{ margin: 0 }}><NotePencil size={14} weight="duotone" style={{ marginRight: 6, opacity: 0.7 }} />Quick Notes</div>
-        <button
-          onClick={addQuickNote}
-          style={{
-            width: 22, height: 22, borderRadius: 6,
-            background: 'var(--accent-muted)', border: '1px solid var(--border)',
-            color: 'var(--accent)', cursor: 'pointer', fontSize: 14, lineHeight: 1,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            transition: 'all 0.15s ease-out',
-          }}
-          title="Add note"
-        >
-          +
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          {quickNotes.length > 1 && (
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+              <MagnifyingGlass size={11} weight="bold" style={{ position: 'absolute', left: 6, color: 'var(--text-3)', pointerEvents: 'none' }} />
+              <input
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                placeholder="Search"
+                style={{
+                  width: 90, padding: '3px 6px 3px 22px', borderRadius: 6, fontSize: 11,
+                  background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
+                  color: 'var(--text-1)', outline: 'none', fontFamily: 'var(--font-ui)',
+                }}
+              />
+            </div>
+          )}
+          <button
+            onClick={addQuickNote}
+            style={{
+              width: 22, height: 22, borderRadius: 6,
+              background: 'var(--accent-muted)', border: '1px solid var(--border)',
+              color: 'var(--accent)', cursor: 'pointer', fontSize: 14, lineHeight: 1,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              transition: 'all 0.15s ease-out',
+            }}
+            title="Add note"
+          >
+            +
+          </button>
+        </div>
       </div>
       <div style={{
         flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 8, minHeight: 0,
@@ -46,7 +68,12 @@ export default function QuickNotes() {
             No notes yet. Click + to add one.
           </div>
         )}
-        {quickNotes.map(note => (
+        {quickNotes.length > 0 && filtered.length === 0 && (
+          <div style={{ color: 'var(--text-2)', fontSize: 12, textAlign: 'center', padding: 16 }}>
+            No matches for “{query}”.
+          </div>
+        )}
+        {filtered.map(note => (
           <div
             key={note.id}
             style={{
