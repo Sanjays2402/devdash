@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useStore } from '../../store'
 
 export default function Pomodoro() {
-  const { pomodoroTime, pomodoroRunning, pomodoroSession, setPomodoroRunning, tickPomodoro } = useStore()
+  const { pomodoroTime, pomodoroRunning, pomodoroSession, pomodoroStats, setPomodoroRunning, tickPomodoro } = useStore()
 
   useEffect(() => {
     if (!pomodoroRunning) return
@@ -35,6 +35,11 @@ export default function Pomodoro() {
         </div>
       </div>
       <div style={{ fontSize: 11, color: 'var(--text-2)' }}>Session {pomodoroSession}/4</div>
+      {pomodoroStats.completed > 0 && (
+        <div style={{ fontSize: 10, color: 'var(--text-3)', fontFamily: 'var(--font-data)' }}>
+          {pomodoroStats.completed} done · {Math.round(pomodoroStats.focusedSec / 60)} min today
+        </div>
+      )}
       <button
         onClick={() => setPomodoroRunning(!pomodoroRunning)}
         style={{

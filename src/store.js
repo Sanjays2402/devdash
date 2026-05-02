@@ -122,12 +122,30 @@ export const useStore = create((set, get) => ({
   pomodoroRunning: false,
   pomodoroTime: 25 * 60,
   pomodoroSession: 1,
+  pomodoroStats: (() => {
+    const stored = JSON.parse(localStorage.getItem('devdash-pomo-stats') || 'null')
+    const today = new Date().toDateString()
+    if (!stored || stored.date !== today) return { date: today, completed: 0, focusedSec: 0 }
+    return stored
+  })(),
   setPomodoroRunning: (v) => set({ pomodoroRunning: v }),
   setPomodoroTime: (v) => set({ pomodoroTime: v }),
   tickPomodoro: () => set(s => {
     if (!s.pomodoroRunning) return {}
     const next = s.pomodoroTime - 1
-    if (next <= 0) return { pomodoroTime: 25 * 60, pomodoroRunning: false, pomodoroSession: s.pomodoroSession + 1 }
+    if (next <= 0) {
+      const today = new Date().toDateString()
+      const stats = s.pomodoroStats.date === today
+        ? { ...s.pomodoroStats, completed: s.pomodoroStats.completed + 1, focusedSec: s.pomodoroStats.focusedSec + 25 * 60 }
+        : { date: today, completed: 1, focusedSec: 25 * 60 }
+      localStorage.setItem('devdash-pomo-stats', JSON.stringify(stats))
+      return {
+        pomodoroTime: 25 * 60,
+        pomodoroRunning: false,
+        pomodoroSession: s.pomodoroSession + 1,
+        pomodoroStats: stats,
+      }
+    }
     return { pomodoroTime: next }
   }),
 
