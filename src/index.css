@@ -176,6 +176,9 @@ body::after {
   50% { opacity: 0.4; }
 }
 
+/* Show quick-link remove button on hover */
+.ql-tile:hover .ql-remove { opacity: 1 !important; }
+
 /* ─── React Grid Layout overrides ─────────────────── */
 .react-grid-layout {
   position: relative;

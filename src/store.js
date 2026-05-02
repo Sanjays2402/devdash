@@ -117,6 +117,16 @@ export const useStore = create((set, get) => ({
     { name: 'Notion', url: 'https://notion.so', color: '#ffffff' },
     { name: 'YouTube', url: 'https://youtube.com', color: '#ff0000' },
   ],
+  addLink: (link) => set(s => {
+    const next = [...s.links, link]
+    localStorage.setItem('devdash-links', JSON.stringify(next))
+    return { links: next }
+  }),
+  removeLink: (idx) => set(s => {
+    const next = s.links.filter((_, i) => i !== idx)
+    localStorage.setItem('devdash-links', JSON.stringify(next))
+    return { links: next }
+  }),
 
   // ─── Pomodoro ──────────────────────────────────────
   pomodoroRunning: false,
