@@ -35,12 +35,28 @@ const WIDGET_MAP = {
 }
 
 export default function App() {
-  const { theme, layout, setLayout, focusMode, focusWidgets } = useStore()
+  const { theme, layout, setLayout, focusMode, focusWidgets, autoTheme, setTheme } = useStore()
   const { width, containerRef, mounted } = useContainerWidth()
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
+
+  // Auto theme: choose based on hour of day
+  useEffect(() => {
+    if (!autoTheme) return
+    const pick = () => {
+      const h = new Date().getHours()
+      // 6–11 solar, 12–17 aurora, 18–21 crimson, 22–5 void
+      if (h >= 6 && h < 12) return 'solar'
+      if (h >= 12 && h < 18) return 'aurora'
+      if (h >= 18 && h < 22) return 'crimson'
+      return 'void'
+    }
+    setTheme(pick())
+    const id = setInterval(() => setTheme(pick()), 5 * 60 * 1000)
+    return () => clearInterval(id)
+  }, [autoTheme, setTheme])
 
   const visibleWidgets = focusMode
     ? WIDGET_IDS.filter(id => focusWidgets.includes(id))

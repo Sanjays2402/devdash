@@ -23,10 +23,15 @@ function saveJSON(key, val) {
 export const useStore = create((set, get) => ({
   // ─── Theme ─────────────────────────────────────────
   theme: localStorage.getItem('devdash-theme') || 'void',
+  autoTheme: localStorage.getItem('devdash-auto-theme') === '1',
   setTheme: (t) => {
     localStorage.setItem('devdash-theme', t)
     document.documentElement.setAttribute('data-theme', t)
     set({ theme: t })
+  },
+  setAutoTheme: (v) => {
+    localStorage.setItem('devdash-auto-theme', v ? '1' : '0')
+    set({ autoTheme: v })
   },
 
   // ─── Layout (drag-drop) ────────────────────────────

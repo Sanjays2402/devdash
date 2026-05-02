@@ -1,9 +1,9 @@
 import { useStore, THEMES, THEME_COLORS } from '../store'
-import { Crosshair, ArrowCounterClockwise } from '@phosphor-icons/react'
+import { Crosshair, ArrowCounterClockwise, Sun } from '@phosphor-icons/react'
 import ConfigIO from './ConfigIO'
 
 export default function Header() {
-  const { theme, setTheme, focusMode, toggleFocusMode, resetLayout } = useStore()
+  const { theme, setTheme, focusMode, toggleFocusMode, resetLayout, autoTheme, setAutoTheme } = useStore()
 
   const now = new Date()
   const hour = now.getHours()
@@ -77,6 +77,20 @@ export default function Header() {
         </button>
 
         {/* Theme selector */}
+        <button
+          onClick={() => setAutoTheme(!autoTheme)}
+          title={autoTheme ? 'Auto theme on (click to disable)' : 'Auto theme off (click to enable)'}
+          style={{
+            width: 28, height: 28, borderRadius: 8,
+            background: autoTheme ? 'var(--accent)' : 'rgba(255,255,255,0.04)',
+            border: autoTheme ? 'none' : '1px solid var(--border)',
+            color: autoTheme ? '#fff' : 'var(--text-2)', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'all 0.15s ease-out',
+          }}
+        >
+          <Sun size={14} weight={autoTheme ? 'fill' : 'regular'} />
+        </button>
         {THEMES.map(t => (
           <button
             key={t}
