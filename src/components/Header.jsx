@@ -1,5 +1,6 @@
 import { useStore, THEMES, THEME_COLORS } from '../store'
 import { Crosshair, ArrowCounterClockwise } from '@phosphor-icons/react'
+import ConfigIO from './ConfigIO'
 
 export default function Header() {
   const { theme, setTheme, focusMode, toggleFocusMode, resetLayout } = useStore()
@@ -39,6 +40,7 @@ export default function Header() {
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <ConfigIO />
         {/* Focus mode toggle */}
         <button
           onClick={toggleFocusMode}
