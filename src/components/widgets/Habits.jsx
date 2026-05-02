@@ -1,11 +1,24 @@
 import { useStore } from '../../store'
 
 export default function Habits() {
-  const { habits, toggleHabit, habitStreak } = useStore()
+  const { habits, toggleHabit, habitStreak, habitHistory } = useStore()
   const done = habits.filter(h => h.done).length
   const total = habits.length
   const pct = total === 0 ? 0 : Math.round((done / total) * 100)
   const allDone = total > 0 && done === total
+
+  // Last 7 days, oldest → newest
+  const days = []
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(Date.now() - i * 24 * 60 * 60 * 1000)
+    const key = d.toDateString()
+    days.push({
+      key,
+      label: d.toLocaleDateString('en-US', { weekday: 'narrow' }),
+      pct: habitHistory?.[key] ?? 0,
+      isToday: i === 0,
+    })
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
@@ -30,8 +43,7 @@ export default function Habits() {
       </div>
 
       {/* Habit list */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1, overflow: 'auto', minHeight: 0 }}>
-        {habits.map(h => (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1, overflow: 'auto', minHeight: 0 }}>        {habits.map(h => (
           <button
             key={h.id}
             onClick={() => toggleHabit(h.id)}
@@ -69,6 +81,30 @@ export default function Habits() {
             </span>
           </button>
         ))}
+      </div>
+
+      {/* 7-day heatmap */}
+      <div style={{ display: 'flex', gap: 4, marginTop: 10, justifyContent: 'space-between' }}>
+        {days.map(d => {
+          const intensity = d.pct
+          const bg = intensity === 0
+            ? 'rgba(255,255,255,0.04)'
+            : `color-mix(in srgb, var(--accent) ${Math.round(intensity * 100)}%, transparent)`
+          return (
+            <div key={d.key} title={`${d.key}: ${Math.round(intensity * 100)}%`}
+              style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}
+            >
+              <div style={{
+                width: '100%', height: 14, borderRadius: 3,
+                background: bg,
+                border: d.isToday ? '1px solid var(--accent)' : '1px solid var(--border)',
+              }} />
+              <span style={{ fontSize: 9, color: d.isToday ? 'var(--accent)' : 'var(--text-3)', fontFamily: 'var(--font-data)' }}>
+                {d.label}
+              </span>
+            </div>
+          )
+        })}
       </div>
     </div>
   )

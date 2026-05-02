@@ -179,11 +179,23 @@ export const useStore = create((set, get) => ({
     return stored
   })(),
   habitStreak: parseInt(localStorage.getItem('devdash-habit-streak') || '0', 10),
+  habitHistory: JSON.parse(localStorage.getItem('devdash-habit-history') || '{}'),
   toggleHabit: (id) => set(s => {
     const habits = s.habits.map(h => h.id === id ? { ...h, done: !h.done } : h)
     const today = new Date().toDateString()
     localStorage.setItem('devdash-habits', JSON.stringify(habits))
     localStorage.setItem('devdash-habits-date', today)
+
+    // History: percent done for today
+    const pct = habits.length === 0 ? 0 : habits.filter(h => h.done).length / habits.length
+    const history = { ...s.habitHistory, [today]: pct }
+    // Trim to last 30 entries to bound localStorage
+    const keys = Object.keys(history)
+    if (keys.length > 30) {
+      const sorted = keys.sort((a, b) => new Date(a) - new Date(b))
+      for (const k of sorted.slice(0, keys.length - 30)) delete history[k]
+    }
+    localStorage.setItem('devdash-habit-history', JSON.stringify(history))
 
     // Streak bookkeeping: bump only on the transition to all-done for today
     const allDone = habits.length > 0 && habits.every(h => h.done)
@@ -198,6 +210,6 @@ export const useStore = create((set, get) => ({
     } else if (!allDone && wasAllDone) {
       // User unchecked after completing — keep the streak (don't punish edits)
     }
-    return { habits, habitStreak: streak }
+    return { habits, habitStreak: streak, habitHistory: history }
   }),
 }))
